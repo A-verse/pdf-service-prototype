@@ -1,0 +1,25 @@
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Generated application artifacts
+/output/pdfs/*
+!/output/pdfs/.gitkeep
+/output/temp/*
+!/output/temp/.gitkeep
+/output/zips/*
+!/output/zips/.gitkeep
+
+# Local test artifacts and caches
+coverage/
+*.log
+.DS_Store
+Thumbs.db
+
+# Legacy storage directory is not used by the application
+/storage/*
+!/storage/.gitkeep
+
+# Git internals must not be included in source archives
+.git/

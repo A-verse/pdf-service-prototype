@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Papertrail · ERP PDF Service</title>
+  <style>
+    :root{color-scheme:light;--ink:#182230;--muted:#667085;--line:#e5e9f0;--bg:#f7f8fa;--card:#fff;--brand:#315bd6;--brand-hover:#2448b5;--soft:#eef3ff;--green:#067647;--red:#b42318;--shadow:0 8px 24px rgba(16,24,40,.045)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+    button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #315bd633;outline-offset:2px}
+    .shell{max-width:1100px;min-height:100vh;margin:auto;padding:18px 24px 12px;display:flex;flex-direction:column}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:11px}.logo{width:38px;height:38px;display:grid;place-items:center;background:var(--soft);color:var(--brand);border-radius:11px;font-size:20px;font-weight:800}.brand h1{font-size:16px;letter-spacing:-.025em;margin:0}.brand p{margin:1px 0 0;color:var(--muted);font-size:12px}
+    .health{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;background:#fff;border:1px solid var(--line);padding:7px 10px;border-radius:99px}.dot{width:7px;height:7px;border-radius:50%;background:#98a2b3}.dot.ok{background:#12b76a}
+    .intro{margin-bottom:16px}.eyebrow{color:var(--brand);font-weight:750;font-size:11px;text-transform:uppercase;letter-spacing:.12em}.intro h2{font-size:clamp(27px,4vw,35px);line-height:1.16;letter-spacing:-.045em;margin:7px 0 9px}.intro p{margin:0;color:var(--muted);max-width:590px;font-size:14px}
+    .layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,.78fr);gap:18px;align-items:start}.card{background:var(--card);border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow)}.main-card{overflow:hidden}
+    .tabs{display:flex;padding:7px;border-bottom:1px solid var(--line);gap:5px;background:#fcfcfd}.tab{border:0;background:transparent;color:var(--muted);padding:9px 13px;border-radius:9px;font-weight:650;font-size:13px}.tab.active{background:var(--soft);color:var(--brand)}.panel{padding:16px}.section-title{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:19px}.section-title h3{margin:0;font-size:16px;letter-spacing:-.02em}.section-title p{margin:4px 0 0;color:var(--muted);font-size:12px}
+    .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}.field label,.label{font-size:12px;font-weight:650;color:#344054}.field input,.field select{width:100%;border:1px solid #d0d5dd;border-radius:9px;padding:8px 10px;background:white;color:var(--ink);outline:none;transition:border-color .15s,box-shadow .15s}.field input:focus,.field select:focus,.bulk-input:focus{border-color:#84adff;box-shadow:0 0 0 3px #2e65e512}
+    .items-head{display:flex;justify-content:space-between;align-items:center;margin:3px 0 10px}.items-head h4{margin:0;font-size:13px}.small-btn{border:1px solid #d9e2fb;background:#fff;border-radius:8px;padding:7px 10px;color:var(--brand);font-size:12px;font-weight:700}.small-btn:hover{background:var(--soft)}.items-labels,.item-row{display:grid;grid-template-columns:minmax(100px,1.8fr) .65fr .8fr 34px;gap:8px}.items-labels{color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.045em;padding:0 2px 6px}.item-row{margin-bottom:6px}.item-row input{min-width:0;width:100%;padding:7px 9px;border:1px solid #d0d5dd;border-radius:8px}.remove{border:1px solid var(--line);background:#fff;border-radius:8px;color:#667085;font-size:17px}.remove:hover{color:var(--red);border-color:#fecdca;background:#fff8f7}
+    .actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:12px}.primary{border:0;background:var(--brand);color:white;border-radius:9px;padding:9px 14px;font-weight:700;font-size:13px;box-shadow:0 1px 2px #17203312}.primary:hover{background:var(--brand-hover)}.primary:disabled{opacity:.6;cursor:wait}.hint{font-size:11px;color:var(--muted)}
+    .side{padding:16px}.side h3{margin:0;font-size:15px}.side>p{margin:4px 0 16px;color:var(--muted);font-size:12px}.metric{border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:8px}.metric span{display:block;color:var(--muted);font-size:11px}.metric strong{display:block;font-size:18px;letter-spacing:-.035em;margin-top:2px;font-weight:700}.status-box{margin-top:13px;padding:13px;border-radius:10px;background:#fafbfc;border:1px solid var(--line)}.status-title{display:flex;justify-content:space-between;gap:8px;font-weight:700;font-size:12px}.status-text{color:var(--muted);font-size:11px;margin-top:5px;overflow-wrap:anywhere}.progress{height:5px;background:#e9edf3;border-radius:99px;overflow:hidden;margin-top:12px}.progress div{height:100%;width:0;background:var(--brand);transition:width .25s}.download{display:none;margin-top:12px;color:var(--brand);font-weight:700;font-size:12px;text-decoration:none}.download.show{display:inline-flex}.download:hover{text-decoration:underline}
+    .notice{display:none;padding:10px 12px;border-radius:9px;margin:0 0 16px;font-size:12px}.notice.show{display:block}.notice.error{background:#fff1f0;color:var(--red);border:1px solid #fecdca}.notice.success{background:#ecfdf3;color:var(--green);border:1px solid #abefc6}.bulk-input{width:100%;min-height:150px;max-height:220px;resize:vertical;border:1px solid #d0d5dd;border-radius:9px;padding:12px;font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace}.bulk-tools{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px}.bulk-tools .label{margin:0}.text-btn{border:0;background:transparent;color:var(--brand);font-size:11px;font-weight:700;padding:3px 0}.text-btn:hover{text-decoration:underline}.bulk-note{font-size:11px;color:var(--muted);margin-top:7px}.footer{margin-top:auto;padding-top:12px;text-align:center;color:#98a2b3;font-size:11px}
+    [hidden]{display:none!important}
+    /* Keep the desktop workspace within a typical laptop viewport without clipping content. */
+    @media(min-width:801px) and (min-height:680px){
+      body{min-height:100vh}
+      .shell{height:100vh;overflow:hidden}
+      .layout{flex:1;min-height:0}
+      .main-card,.side{min-height:0}
+      .main-card{display:flex;flex-direction:column}
+      .main-card .panel{min-height:0}
+      #singlePanel,#bulkPanel{min-height:0}
+      #items{max-height:150px;overflow-y:auto;padding-right:3px}
+      .bulk-input{height:clamp(130px,22vh,190px);min-height:130px;max-height:190px;resize:none}
+    }
+    @media(max-width:800px){.shell{min-height:100vh;height:auto;padding:19px 13px 18px}.layout{grid-template-columns:1fr}.side{order:2}.topbar{margin-bottom:22px}.footer{margin-top:22px}}@media(max-width:520px){.shell{padding:19px 13px 34px}.field-grid{grid-template-columns:1fr;gap:0}.item-row,.items-labels{grid-template-columns:minmax(80px,1fr) 54px 75px 30px;gap:5px}.items-labels span:nth-child(2),.items-labels span:nth-child(3){font-size:9px}.panel{padding:15px}.tabs{padding:6px}.tab{flex:1;padding:9px 5px;font-size:12px}.health{padding:7px 9px}.health span:last-child{display:none}.intro h2{font-size:29px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="logo">P</div><div><h1>Papertrail</h1><p>ERP document generation</p></div></div>
+      <div class="health"><span class="dot" id="healthDot"></span><span id="healthText">Checking API…</span></div>
+    </header>
+    <section class="intro">
+      <div class="eyebrow">PDF workspace</div>
+      <h2>Documents, ready to go.</h2>
+      <p>Create an invoice or purchase order in a few fields, or process a batch of up to 100 documents. No setup beyond your local API.</p>
+    </section>
+
+    <div class="layout">
+      <main class="card main-card">
+        <nav class="tabs" aria-label="Generation mode">
+          <button class="tab active" data-tab="single">Single PDF</button>
+          <button class="tab" data-tab="bulk">Bulk generation</button>
+        </nav>
+        <div class="panel">
+          <div id="notice" class="notice" role="status"></div>
+          <section id="singlePanel">
+            <div class="section-title"><div><h3>Document details</h3><p>Enter the basics, then add one or more line items.</p></div></div>
+            <form id="singleForm">
+              <div class="field-grid">
+                <div class="field"><label for="docType">Document type</label><select id="docType"><option value="invoice">Invoice</option><option value="purchase_order">Purchase order</option></select></div>
+                <div class="field"><label for="docNumber">Document number</label><input id="docNumber" value="INV-1001" required maxlength="80"></div>
+                <div class="field"><label for="docDate">Document date</label><input id="docDate" type="date"></div>
+                <div class="field"><label for="party" id="partyLabel">Customer</label><input id="party" placeholder="Company name" required maxlength="120"></div>
+              </div>
+              <div class="items-head"><h4>Line items</h4><button class="small-btn" type="button" id="addItem">+ Add item</button></div>
+              <div class="items-labels" aria-hidden="true"><span>Description</span><span>Qty</span><span>Unit price</span><span></span></div>
+              <div id="items"></div>
+              <div class="actions"><button class="primary" id="singleSubmit" type="submit">Generate PDF</button><span class="hint">Your PDF downloads when it’s ready.</span></div>
+            </form>
+          </section>
+          <section id="bulkPanel" hidden>
+            <div class="section-title"><div><h3>Bulk generation</h3><p>Submit multiple documents together and download them as one ZIP.</p></div></div>
+            <div class="field"><div class="bulk-tools"><label class="label" for="bulkJson">Request JSON</label><button class="text-btn" type="button" id="resetSample">Load sample</button></div><textarea id="bulkJson" class="bulk-input" spellcheck="false" aria-describedby="bulkHelp"></textarea><div class="bulk-note" id="bulkHelp">Expected format: <code>{"documents":[...]}</code> · Up to 100 documents per batch.</div></div>
+            <div class="actions"><button class="primary" id="bulkSubmit" type="button">Start bulk job</button><span class="hint">You can track progress here.</span></div>
+          </section>
+        </div>
+      </main>
+
+      <aside class="card side">
+        <h3>Activity</h3><p>Service health and the latest bulk job.</p>
+        <div class="metric"><span>Service</span><strong id="serviceStatus">Checking</strong></div>
+        <div class="metric"><span>Latest job</span><strong id="jobStatus">No job yet</strong></div>
+        <div class="status-box">
+          <div class="status-title"><span id="progressLabel">Waiting for a job</span><span id="progressCount">0 / 0</span></div>
+          <div class="status-text" id="progressText">Bulk job progress will appear here after submission.</div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <a class="download" id="downloadLink" href="#" download>Download ZIP ↗</a>
+        </div>
+        <p class="hint" style="margin:14px 0 0">Bulk jobs run in the background. Keep this page open to watch progress.</p>
+      </aside>
+    </div>
+    <div class="footer">Papertrail · Local development UI</div>
+  </div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const itemContainer = $("items");
+const tabs = [...document.querySelectorAll(".tab")];
+let pollTimer = null;
+
+function showNotice(message, type = "success") {
+  const box = $("notice");
+  box.textContent = message;
+  box.className = `notice show ${type}`;
+}
+function clearNotice() { $("notice").className = "notice"; }
+function addItem(description = "", quantity = 1, unitPrice = 0) {
+  const row = document.createElement("div");
+  row.className = "item-row";
+  row.innerHTML = `<input aria-label="Description" placeholder="Description" maxlength="200" required>
+    <input aria-label="Quantity" type="number" min="0" step="any" value="${quantity}" required>
+    <input aria-label="Unit price" type="number" min="0" step="any" value="${unitPrice}" required>
+    <button class="remove" type="button" aria-label="Remove item">×</button>`;
+  const inputs = row.querySelectorAll("input");
+  inputs[0].value = description;
+  row.querySelector(".remove").addEventListener("click", () => {
+    if (itemContainer.children.length > 1) row.remove();
+    else showNotice("Keep at least one line item.", "error");
+  });
+  itemContainer.append(row);
+}
+function samplePayload() {
+  return {documents:[
+    {type:"invoice",number:"INV-1001",customer:"Company A",items:[{description:"Steel Parts",quantity:2,unitPrice:150}]},
+    {type:"purchase_order",number:"PO-1002",vendor:"Company B",items:[{description:"Bolts",quantity:10,unitPrice:5}]}
+  ]};
+}
+function currentDocument() {
+  const isPO = $("docType").value === "purchase_order";
+  return {
+    type: $("docType").value,
+    number: $("docNumber").value.trim(),
+    date: $("docDate").value || new Date().toISOString().slice(0, 10),
+    [isPO ? "vendor" : "customer"]: $("party").value.trim(),
+    items: [...itemContainer.querySelectorAll(".item-row")].map(row => {
+      const inputs = row.querySelectorAll("input");
+      return { description: inputs[0].value.trim(), quantity: Number(inputs[1].value), unitPrice: Number(inputs[2].value) };
+    })
+  };
+}
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob), link = document.createElement("a");
+  link.href = url; link.download = filename; document.body.append(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+async function checkHealth() {
+  try {
+    const res = await fetch("/health");
+    if (!res.ok) throw new Error();
+    $("healthDot").classList.add("ok");
+    $("healthText").textContent = "API connected";
+    $("serviceStatus").textContent = "Online";
+  } catch {
+    $("healthDot").classList.remove("ok");
+    $("healthText").textContent = "API unavailable";
+    $("serviceStatus").textContent = "Offline";
+  }
+}
+tabs.forEach(tab => tab.addEventListener("click", () => {
+  tabs.forEach(t => t.classList.toggle("active", t === tab));
+  $("singlePanel").hidden = tab.dataset.tab !== "single";
+  $("bulkPanel").hidden = tab.dataset.tab !== "bulk";
+  clearNotice();
+}));
+$("docType").addEventListener("change", () => {
+  const isPO = $("docType").value === "purchase_order";
+  $("partyLabel").textContent = isPO ? "Vendor" : "Customer";
+  $("docNumber").value = isPO ? "PO-1001" : "INV-1001";
+});
+$("addItem").addEventListener("click", () => addItem("", 1, 0));
+$("singleForm").addEventListener("submit", async event => {
+  event.preventDefault(); clearNotice();
+  const doc = currentDocument();
+  if (!doc.number || !(doc.customer || doc.vendor) || doc.items.some(item => !item.description || item.quantity <= 0 || item.unitPrice < 0)) {
+    return showNotice("Add a document number, party name, item description, positive quantity and valid unit price.", "error");
+  }
+  const button = $("singleSubmit"); button.disabled = true; button.textContent = "Generating…";
+  try {
+    const response = await fetch("/v1/documents", {
+      method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify(currentDocument())
+    });
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.error || `Request failed (${response.status})`);
+    }
+    const blob = await response.blob();
+    const name = `${currentDocument().number || "document"}.pdf`.replace(/[^a-zA-Z0-9_.-]/g, "_");
+    downloadBlob(blob, name);
+    showNotice("PDF generated and download started.");
+  } catch (error) { showNotice(error.message, "error"); }
+  finally { button.disabled = false; button.textContent = "Generate PDF"; }
+});
+$("bulkSubmit").addEventListener("click", async () => {
+  clearNotice();
+  let payload;
+  try { payload = JSON.parse($("bulkJson").value); }
+  catch { return showNotice("The JSON is invalid. Check commas and brackets.", "error"); }
+  if (!payload || !Array.isArray(payload.documents)) return showNotice('Expected JSON shape: {"documents":[...]}', "error");
+  if (payload.documents.length < 1 || payload.documents.length > 100) return showNotice("Add between 1 and 100 documents.", "error");
+  const button = $("bulkSubmit"); button.disabled = true; button.textContent = "Submitting…";
+  $("downloadLink").classList.remove("show");
+  try {
+    const response = await fetch("/v1/bulk-jobs", {
+      method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
+    showNotice("Bulk job accepted. Tracking progress on the right.");
+    $("jobStatus").textContent = "Queued";
+    $("progressLabel").textContent = "Bulk job queued";
+    $("progressText").textContent = `Job ID: ${data.jobId}`;
+    $("progressCount").textContent = "0 / 0";
+    $("progressBar").style.width = "0%";
+    if (pollTimer) clearTimeout(pollTimer);
+    pollJob(data.jobId);
+  } catch (error) { showNotice(error.message, "error"); }
+  finally { button.disabled = false; button.textContent = "Start bulk job"; }
+});
+async function pollJob(jobId) {
+  try {
+    const response = await fetch(`/v1/bulk-jobs/${encodeURIComponent(jobId)}`);
+    const job = await response.json();
+    if (!response.ok) throw new Error(job.error || "Could not fetch job status");
+    $("jobStatus").textContent = job.status.replaceAll("_", " ");
+    $("progressLabel").textContent = job.status === "completed" ? "Batch complete" :
+      job.status === "completed_with_errors" ? "Batch completed with errors" : job.status === "failed" ? "Batch failed" : "Processing documents";
+    $("progressCount").textContent = `${job.completed} / ${job.total}`;
+    $("progressText").textContent = job.failed ? `${job.failed} document(s) failed.` : `Job ID: ${job.jobId}`;
+    $("progressBar").style.width = `${job.total ? Math.round(job.completed / job.total * 100) : 0}%`;
+    if (job.downloadUrl) {
+      $("downloadLink").href = job.downloadUrl;
+      $("downloadLink").classList.add("show");
+      $("downloadLink").textContent = "Download ZIP ↗";
+    }
+    if (["completed", "completed_with_errors", "failed"].includes(job.status)) {
+      showNotice(job.status === "completed" ? "All documents were generated." :
+        job.status === "completed_with_errors" ? "The batch finished, but some documents failed. Check the manifest." :
+        "The bulk job failed. Check the server terminal.", job.status === "completed" ? "success" : "error");
+      return;
+    }
+    pollTimer = setTimeout(() => pollJob(jobId), 1200);
+  } catch (error) {
+    $("progressText").textContent = error.message;
+    pollTimer = setTimeout(() => pollJob(jobId), 2500);
+  }
+}
+$("bulkJson").value = JSON.stringify(samplePayload(), null, 2);
+$("resetSample").addEventListener("click", () => { $("bulkJson").value = JSON.stringify(samplePayload(), null, 2); clearNotice(); });
+$("docDate").value = new Date().toISOString().slice(0,10);
+addItem("Steel Parts", 2, 150);
+checkHealth();
+setInterval(checkHealth, 10000);
+</script>
+</body>
+</html>

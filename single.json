@@ -1,0 +1,14 @@
+﻿{
+  "type": "invoice",
+  "invoiceNumber": "INV-TEST-001",
+  "date": "2026-10-15",
+  "customer": "Test Customer, Jaipur Rajasthan",
+  "items": [
+    {
+      "description": "Testing PDF generation",
+      "quantity": 2,
+      "unitPrice": 500
+    }
+  ],
+  "total": 1000
+}
